@@ -468,8 +468,9 @@ document.getElementById("change-password").addEventListener("click", () => {
 });
 
 // ---------------------------
-// Secret Operation: Unlock Vault via Key Sequence
+// Secret Operation: Unlock Vault
 // ---------------------------
+// Desktop: Triple press "v"
 let secretKeyBuffer = [];
 const secretKeySequence = ["v", "v", "v"];
 const secretTimeout = 1000;
@@ -483,6 +484,23 @@ document.addEventListener("keydown", e => {
     secretKeyBuffer = [];
   }
   setTimeout(() => { secretKeyBuffer = []; }, secretTimeout);
+});
+
+// Mobile: Triple-tap on the header brand element
+let tapCount = 0;
+let tapTimeout = null;
+document.querySelector(".brand").addEventListener("touchend", function() {
+  tapCount++;
+  if (tapCount === 1) {
+    tapTimeout = setTimeout(() => {
+      tapCount = 0;
+    }, 800);
+  }
+  if (tapCount === 3) {
+    clearTimeout(tapTimeout);
+    tapCount = 0;
+    openVaultModal();
+  }
 });
 
 // ---------------------------
